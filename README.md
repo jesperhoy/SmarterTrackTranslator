@@ -10,7 +10,7 @@ First load in the English version (File menu / Open English) using the "en.xml" 
 Next fill in the cells in the "Translated" column one by one. 
 Finally save your work (File menu / Save Translation) and generate a new language translation file for upload to your SmarterTrack web-site (File menu / Save Combined).
 
-The "Save Translation" function generates a file which only contains the entries that have been translated. Entries where the "Translated" column are blank are not saved. 
+The "Save Translation" function generates a file which only contains the entries that have been translated. Entries where the "Translated" column is blank are not saved. 
 
 The "Save Combined" function generates a complete translation file which can be uploaded to your SmarterTrack web-site. For entries where the "Translated" column is blank, the English version is used instead.
 

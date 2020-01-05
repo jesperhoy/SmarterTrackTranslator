@@ -6,22 +6,23 @@ A Windows desktop tool for creating and updating translation files (for UI inter
 
 ## How to use?
 
-- Make sure your Windows computer has .NET Framework 4.8 installed.
-- Download and run "SmarterTrackTranslator.exe" from <https://github.com/jesperhoy/SmarterTrackTranslator/releases>
+First load in the English version (File menu / Open English) using the "en.xml" file from your SmarterTrack web-site. This gives you a table where the "ID" and "English" columns are filled in, and the "Translated" column is blank.
+Next fill in the cells in the "Translated" column one by one. 
+Finally save your work (File menu / Save Translation) and generate a new language translation file for upload to your SmarterTrack web-site (File menu / Save Combined).
 
-To make a new translation:
+The "Save Translation" function generates a file which only contains the entries that have been translated. Entries where the "Translated" column are blank are not saved. 
 
-- From the "File" menu, select "Open English...", and pick "...path-to-SmarterTrack-website\App_Data\Translations\en.xml"
-- Enter values in the "Translated" column (double click - or select cell and start typing).
-- From the "File" menu, select "Save Translation as..." (will save only translated records).
-- From the "File" menu, select "Save Combined as..." (will save translated records and fill in blanks with English records).
-- Upload the "combined" file to your web-server ("...path-to-SmarterTrack-website\App_Data\Translations\language-code.xml")
+The "Save Combined" function generates a complete translation file which can be uploaded to your SmarterTrack web-site. For entries where the "Translated" column is blank, the English version is used instead.
 
-To edit/update a translation:
+You should always keep a separate "Save Translation" file version of your work.
 
-- From the "File" menu, select "Open English...", and pick "...path-to-SmarterTrack-website\App_Data\Translations\en.xml"
-- From the "File" menu, select "Open Translation...".
+When you want to continue your work later, or update a translation when SmarterTools releases a new version (with new translation items), you always first "Open English" (using the current "en.xml" version from your web-site), then "Open Translation". This will match up English and translated items based on the ID column.
 
+## How to install
+
+Make sure you have .NET Framework v. 4.8 installed / enabled on your computer.
+
+Download and run SmarterTrackTranslator.exe from https://github.com/jesperhoy/SmarterTrackTranslator/releases
 
 ## Dependencies 
 

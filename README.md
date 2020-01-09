@@ -2,9 +2,11 @@
 
 A Windows desktop tool for creating and updating translation files (for UI internationalization) for [SmarterTrack](https://www.smartertools.com/smartertrack).
 
-Lists English and translated items a side-by-side for easy refenrece, has search function, and helper dialog for multi-line items.
+Lists English and translated items a side-by-side for easy reference, has a search function, and a helper dialog for multi-line items.
 
-Using this tool, rather than editing the XML file directly, also makes it easier to keep track of which items have been translated and which have not (the Translation column is empty for those that have not).
+Using this tool, rather than editing the XML file directly, makes it easier to keep track of which items have been translated and which have not (the Translation column is empty for those that have not).
+
+Also, whenever a new version of SmarterTrack is released, this tool makes it easy to spot new items that need to be translated. Simply load the new "en.xml" file, load the old translation file, and instantly new items will stand out in the list (Translation column empty).
 
 ![](screenshot.png)
 
@@ -19,7 +21,7 @@ The "Save Translation" function generates a file which only contains the entries
 
 You should always keep a separate "Save Translation" file version of your work.
 
-When you want to continue your work later, or update a translation when SmarterTools releases a new version (with new translation items), you always first "Open English" (using the current "en.xml" version from your web-site), then "Open Translation". This will match up English and translated items based on the ID column.
+When you want to continue your work later, you always first "Open English" (using the current "en.xml" version from your web-site), then "Open Translation". This will match up English and translated items based on the ID column.
 
 ## How to install
 

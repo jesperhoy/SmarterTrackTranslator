@@ -4,6 +4,8 @@ A Windows desktop tool for creating and updating translation files (for UI inter
 
 Lists English and translated items a side-by-side for easy refenrece, has search function, and helper dialog for multi-line items.
 
+Using this tool, rather than editing the XML file directly, also makes it easier to keep track of which items have been translated and which have not (the Translation column is empty for those that have not).
+
 ![](screenshot.png)
 
 ## How to use?

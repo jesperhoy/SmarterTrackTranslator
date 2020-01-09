@@ -1,10 +1,10 @@
 ﻿Imports System.ComponentModel
 
 Public Class Form1
-  Dim x As String
   Dim Data As New List(Of TlItem)
   Dim TranslationFileName As String = Nothing
   Dim CombinedFileName As String = Nothing
+  Dim DataChanged As Boolean = False
 
   Private Sub grid1_CellValueNeeded(sender As Object, e As DataGridViewCellValueEventArgs) Handles grid1.CellValueNeeded
     Select Case e.ColumnIndex
@@ -14,13 +14,17 @@ Public Class Form1
         e.Value = Data(e.RowIndex).English
       Case 2 'translated
         e.Value = Data(e.RowIndex).Translated
-        'Case 3 ' button
-        '  e.Value = "..."
+      Case 3 ' button
+        e.Value = "..."
     End Select
   End Sub
 
   Private Sub grid1_CellValuePushed(sender As Object, e As DataGridViewCellValueEventArgs) Handles grid1.CellValuePushed
-    Data(e.RowIndex).Translated = CStr(e.Value)
+    Dim NewValue = If(e.Value Is Nothing, "", CStr(e.Value).Trim)
+    If NewValue = Data(e.RowIndex).Translated Then Exit Sub
+    Data(e.RowIndex).Translated = NewValue
+    DataChanged = True
+    UpdateTitleBar()
     UpdateStatusBar()
   End Sub
 
@@ -78,6 +82,15 @@ Public Class Form1
     mnuSaveTranslation_Click(sender, e)
   End Sub
 
+  Sub UpdateTitleBar()
+    Dim x = "SmarterTrack Translator"
+    If Not String.IsNullOrEmpty(TranslationFileName) Then
+      x = TranslationFileName.Substring(TranslationFileName.LastIndexOf("\") + 1) & " - " & x
+      If DataChanged Then x = "*" & x
+    End If
+    Me.Text = x
+  End Sub
+
   Private Sub mnuSaveTranslation_Click(sender As Object, e As EventArgs) Handles mnuSaveTranslation.Click
     If String.IsNullOrEmpty(TranslationFileName) Then mnuSaveTranslationAs_Click(sender, e) : Exit Sub
     Dim d = New Xml.XmlDocument()
@@ -93,6 +106,8 @@ Public Class Form1
       root.AppendChild(el)
     Next
     d.Save(TranslationFileName)
+    DataChanged = False
+    UpdateTitleBar()
   End Sub
 
 
@@ -125,6 +140,7 @@ Public Class Form1
       Exit Sub
     End If
     TranslationFileName = OpenFileDialog1.FileName
+    UpdateTitleBar()
     Data = NewData
     grid1.Refresh()
     UpdateStatusBar()
@@ -170,15 +186,17 @@ Public Class Form1
   End Sub
 
   Private Sub DoFind(prev As Boolean)
+    If Data Is Nothing OrElse Data.Count = 0 Then Exit Sub
     Dim fv = txtFind.Text.Trim
     If fv = "" Then Exit Sub
 
-    Dim CurRow = grid1.CurrentCell.RowIndex
-    Dim CurCol = grid1.CurrentCell.ColumnIndex
+    Dim c = grid1.CurrentCell
+    If c Is Nothing Then MsgBox("Not currentcell") : Exit Sub
+    Dim CurRow = c.RowIndex
+    Dim CurCol = c.ColumnIndex
     Dim v As String = Nothing
 
 mark1:
-
     If prev Then
       If CurRow = 0 AndAlso CurCol = 0 Then MsgBox("Cannot find """ & fv & """") : Exit Sub
       CurCol -= 1
@@ -228,12 +246,27 @@ mark1:
     Dim itm = Data(e.RowIndex)
     If Not itm.English.Contains(vbLf) Then Exit Sub
     e.Cancel = True
-    MsgBox("Multi-line edit is not yet implemented", MsgBoxStyle.Exclamation, "Multi-line edit")
+    grid1_CellClick(sender, New DataGridViewCellEventArgs(3, e.RowIndex))
   End Sub
 
-  'Private Sub grid1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles grid1.CellClick
-  '  If e.ColumnIndex <> 3 OrElse e.RowIndex < 0 Then Exit Sub
-  '  MsgBox("edit")
-  'End Sub
+  Private Sub txtFind_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtFind.KeyPress
+    If e.KeyChar = vbCr Then e.Handled = True : DoFind(False)
+  End Sub
 
+  Private Sub grid1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles grid1.CellClick
+    If e.RowIndex < 0 OrElse e.ColumnIndex <> 3 Then Exit Sub
+    Dim f = New frmEdit
+    Dim itm = Data(e.RowIndex)
+    f.txtID.Text = itm.ID
+    f.txtEnglish.Text = itm.English
+    f.txtTranslated.Text = itm.Translated
+    If f.ShowDialog(Me) <> DialogResult.OK Then Exit Sub
+    Dim NewValue = f.txtTranslated.Text.Trim
+    If NewValue = itm.Translated Then Exit Sub
+    itm.Translated = NewValue
+    grid1.InvalidateRow(e.RowIndex)
+    DataChanged = True
+    UpdateTitleBar()
+    UpdateStatusBar()
+  End Sub
 End Class

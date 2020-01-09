@@ -2,17 +2,18 @@
 
 A Windows desktop tool for creating and updating translation files (for UI internationalization) for [SmarterTrack](https://www.smartertools.com/smartertrack).
 
+Lists English and translated items a side-by-side for easy refenrece, has search function, and helper dialog for multi-line items.
+
 ![](screenshot.png)
 
 ## How to use?
 
-First load in the English version (File menu / Open English) using the "en.xml" file from your SmarterTrack web-site. This gives you a table where the "ID" and "English" columns are filled in, and the "Translated" column is blank.
-Next fill in the cells in the "Translated" column one by one. 
-Finally save your work (File menu / Save Translation) and generate a new language translation file for upload to your SmarterTrack web-site (File menu / Save Combined).
+- First load in the English version (File menu / Open English) using the "en.xml" file from your SmarterTrack web-site. This gives you a table where the "ID" and "English" columns are filled in, and the "Translated" column is blank.
+- Next, fill in the cells in the "Translated" column one by one. For single line items (most items), you can edit the translated value directly in the table (double click cell or just start typing). For multi-line items, click the "..." button to open item in a separate dialog.
+- Save your work (File menu / Save Translation).
+- And finally, generate a new language translation file for upload to your SmarterTrack web-site (File menu / Save Combined).
 
-The "Save Translation" function generates a file which only contains the entries that have been translated. Entries where the "Translated" column is blank are not saved. 
-
-The "Save Combined" function generates a complete translation file which can be uploaded to your SmarterTrack web-site. For entries where the "Translated" column is blank, the English version is used instead.
+The "Save Translation" function generates a file which only contains the entries that have been translated. Entries where the "Translated" column is blank are not saved. The "Save Combined" function generates a complete translation file which can be uploaded to your SmarterTrack web-site. For entries where the "Translated" column is blank, the English version is used instead.
 
 You should always keep a separate "Save Translation" file version of your work.
 

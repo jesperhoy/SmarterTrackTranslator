@@ -63,13 +63,13 @@ Partial Class AboutBox1
         Me.TableLayoutPanel.Margin = New System.Windows.Forms.Padding(4)
         Me.TableLayoutPanel.Name = "TableLayoutPanel"
         Me.TableLayoutPanel.RowCount = 7
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667!))
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 41.66667!))
-        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090908!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090908!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090908!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090908!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.18182!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.45455!))
+        Me.TableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel.Size = New System.Drawing.Size(528, 318)
         Me.TableLayoutPanel.TabIndex = 0
         '
@@ -101,7 +101,7 @@ Partial Class AboutBox1
         'LabelVersion
         '
         Me.LabelVersion.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LabelVersion.Location = New System.Drawing.Point(182, 26)
+        Me.LabelVersion.Location = New System.Drawing.Point(182, 25)
         Me.LabelVersion.Margin = New System.Windows.Forms.Padding(8, 0, 4, 0)
         Me.LabelVersion.MaximumSize = New System.Drawing.Size(0, 21)
         Me.LabelVersion.Name = "LabelVersion"
@@ -113,7 +113,7 @@ Partial Class AboutBox1
         'LabelCopyright
         '
         Me.LabelCopyright.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LabelCopyright.Location = New System.Drawing.Point(182, 52)
+        Me.LabelCopyright.Location = New System.Drawing.Point(182, 50)
         Me.LabelCopyright.Margin = New System.Windows.Forms.Padding(8, 0, 4, 0)
         Me.LabelCopyright.MaximumSize = New System.Drawing.Size(0, 21)
         Me.LabelCopyright.Name = "LabelCopyright"
@@ -125,7 +125,7 @@ Partial Class AboutBox1
         'LabelCompanyName
         '
         Me.LabelCompanyName.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LabelCompanyName.Location = New System.Drawing.Point(182, 78)
+        Me.LabelCompanyName.Location = New System.Drawing.Point(182, 75)
         Me.LabelCompanyName.Margin = New System.Windows.Forms.Padding(8, 0, 4, 0)
         Me.LabelCompanyName.MaximumSize = New System.Drawing.Size(0, 21)
         Me.LabelCompanyName.Name = "LabelCompanyName"
@@ -137,13 +137,13 @@ Partial Class AboutBox1
         'TextBoxDescription
         '
         Me.TextBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TextBoxDescription.Location = New System.Drawing.Point(182, 160)
+        Me.TextBoxDescription.Location = New System.Drawing.Point(182, 155)
         Me.TextBoxDescription.Margin = New System.Windows.Forms.Padding(8, 4, 4, 4)
         Me.TextBoxDescription.Multiline = True
         Me.TextBoxDescription.Name = "TextBoxDescription"
         Me.TextBoxDescription.ReadOnly = True
         Me.TextBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.TextBoxDescription.Size = New System.Drawing.Size(342, 124)
+        Me.TextBoxDescription.Size = New System.Drawing.Size(342, 120)
         Me.TextBoxDescription.TabIndex = 0
         Me.TextBoxDescription.TabStop = False
         Me.TextBoxDescription.Text = resources.GetString("TextBoxDescription.Text")
@@ -152,17 +152,17 @@ Partial Class AboutBox1
         '
         Me.OKButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OKButton.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.OKButton.Location = New System.Drawing.Point(424, 292)
+        Me.OKButton.Location = New System.Drawing.Point(424, 286)
         Me.OKButton.Margin = New System.Windows.Forms.Padding(4)
         Me.OKButton.Name = "OKButton"
-        Me.OKButton.Size = New System.Drawing.Size(100, 22)
+        Me.OKButton.Size = New System.Drawing.Size(100, 28)
         Me.OKButton.TabIndex = 0
         Me.OKButton.Text = "&OK"
         '
         'LinkLabel1
         '
         Me.LinkLabel1.AutoSize = True
-        Me.LinkLabel1.Location = New System.Drawing.Point(177, 104)
+        Me.LinkLabel1.Location = New System.Drawing.Point(177, 100)
         Me.LinkLabel1.Name = "LinkLabel1"
         Me.LinkLabel1.Size = New System.Drawing.Size(341, 17)
         Me.LinkLabel1.TabIndex = 1

@@ -53,7 +53,9 @@ Partial Class Form1
         Me.colID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colEnglish = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colTranslated = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column1 = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.chkSearchNotes = New System.Windows.Forms.CheckBox()
         CType(Me.grid1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -67,7 +69,7 @@ Partial Class Form1
         Me.grid1.AllowUserToDeleteRows = False
         Me.grid1.AllowUserToResizeRows = False
         Me.grid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grid1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colID, Me.colEnglish, Me.colTranslated, Me.Column1})
+        Me.grid1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colID, Me.colEnglish, Me.colTranslated, Me.Column2, Me.Column1})
         Me.grid1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.grid1.Location = New System.Drawing.Point(3, 3)
         Me.grid1.Name = "grid1"
@@ -75,7 +77,7 @@ Partial Class Form1
         Me.grid1.RowHeadersWidth = 35
         Me.grid1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.grid1.RowTemplate.Height = 24
-        Me.grid1.Size = New System.Drawing.Size(904, 462)
+        Me.grid1.Size = New System.Drawing.Size(960, 462)
         Me.grid1.TabIndex = 0
         Me.grid1.VirtualMode = True
         '
@@ -85,7 +87,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(910, 28)
+        Me.MenuStrip1.Size = New System.Drawing.Size(966, 28)
         Me.MenuStrip1.TabIndex = 1
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -162,7 +164,7 @@ Partial Class Form1
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblTotal, Me.lblTranslated})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 553)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(910, 26)
+        Me.StatusStrip1.Size = New System.Drawing.Size(966, 26)
         Me.StatusStrip1.TabIndex = 2
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -203,10 +205,11 @@ Partial Class Form1
         Me.Panel1.Controls.Add(Me.txtFind)
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.chkMatchCase)
+        Me.Panel1.Controls.Add(Me.chkSearchNotes)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(3, 471)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(904, 79)
+        Me.Panel1.Size = New System.Drawing.Size(960, 79)
         Me.Panel1.TabIndex = 3
         '
         'chkMatchExact
@@ -216,27 +219,27 @@ Partial Class Form1
         Me.chkMatchExact.Margin = New System.Windows.Forms.Padding(13, 3, 3, 3)
         Me.chkMatchExact.Name = "chkMatchExact"
         Me.chkMatchExact.Size = New System.Drawing.Size(106, 21)
-        Me.chkMatchExact.TabIndex = 13
+        Me.chkMatchExact.TabIndex = 7
         Me.chkMatchExact.Text = "Exact match"
         Me.chkMatchExact.UseVisualStyleBackColor = True
         '
         'btnFindNext
         '
         Me.btnFindNext.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnFindNext.Location = New System.Drawing.Point(747, 42)
+        Me.btnFindNext.Location = New System.Drawing.Point(803, 42)
         Me.btnFindNext.Name = "btnFindNext"
         Me.btnFindNext.Size = New System.Drawing.Size(150, 30)
-        Me.btnFindNext.TabIndex = 12
+        Me.btnFindNext.TabIndex = 14
         Me.btnFindNext.Text = "Next (F3)"
         Me.btnFindNext.UseVisualStyleBackColor = True
         '
         'btnFindPrev
         '
         Me.btnFindPrev.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnFindPrev.Location = New System.Drawing.Point(747, 6)
+        Me.btnFindPrev.Location = New System.Drawing.Point(803, 6)
         Me.btnFindPrev.Name = "btnFindPrev"
         Me.btnFindPrev.Size = New System.Drawing.Size(150, 30)
-        Me.btnFindPrev.TabIndex = 11
+        Me.btnFindPrev.TabIndex = 13
         Me.btnFindPrev.Text = "Previous (Shift+F3)"
         Me.btnFindPrev.UseVisualStyleBackColor = True
         '
@@ -247,7 +250,7 @@ Partial Class Form1
         Me.Label2.Margin = New System.Windows.Forms.Padding(13, 0, 3, 0)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(72, 17)
-        Me.Label2.TabIndex = 10
+        Me.Label2.TabIndex = 8
         Me.Label2.Text = "Search in:"
         '
         'chkSearchID
@@ -258,7 +261,7 @@ Partial Class Form1
         Me.chkSearchID.Location = New System.Drawing.Point(328, 44)
         Me.chkSearchID.Name = "chkSearchID"
         Me.chkSearchID.Size = New System.Drawing.Size(43, 21)
-        Me.chkSearchID.TabIndex = 7
+        Me.chkSearchID.TabIndex = 9
         Me.chkSearchID.Text = "ID"
         Me.chkSearchID.UseVisualStyleBackColor = True
         '
@@ -271,7 +274,7 @@ Partial Class Form1
         Me.chkSearchTranslated.Margin = New System.Windows.Forms.Padding(13, 3, 3, 3)
         Me.chkSearchTranslated.Name = "chkSearchTranslated"
         Me.chkSearchTranslated.Size = New System.Drawing.Size(98, 21)
-        Me.chkSearchTranslated.TabIndex = 9
+        Me.chkSearchTranslated.TabIndex = 11
         Me.chkSearchTranslated.Text = "Translated"
         Me.chkSearchTranslated.UseVisualStyleBackColor = True
         '
@@ -284,7 +287,7 @@ Partial Class Form1
         Me.chkSearchEnglish.Margin = New System.Windows.Forms.Padding(13, 3, 3, 3)
         Me.chkSearchEnglish.Name = "chkSearchEnglish"
         Me.chkSearchEnglish.Size = New System.Drawing.Size(76, 21)
-        Me.chkSearchEnglish.TabIndex = 8
+        Me.chkSearchEnglish.TabIndex = 10
         Me.chkSearchEnglish.Text = "English"
         Me.chkSearchEnglish.UseVisualStyleBackColor = True
         '
@@ -294,7 +297,7 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFind.Location = New System.Drawing.Point(50, 10)
         Me.txtFind.Name = "txtFind"
-        Me.txtFind.Size = New System.Drawing.Size(648, 22)
+        Me.txtFind.Size = New System.Drawing.Size(704, 22)
         Me.txtFind.TabIndex = 6
         '
         'Label1
@@ -312,7 +315,7 @@ Partial Class Form1
         Me.chkMatchCase.Location = New System.Drawing.Point(10, 44)
         Me.chkMatchCase.Name = "chkMatchCase"
         Me.chkMatchCase.Size = New System.Drawing.Size(102, 21)
-        Me.chkMatchCase.TabIndex = 4
+        Me.chkMatchCase.TabIndex = 6
         Me.chkMatchCase.Text = "Match case"
         Me.chkMatchCase.UseVisualStyleBackColor = True
         '
@@ -331,7 +334,7 @@ Partial Class Form1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(910, 579)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(966, 579)
         Me.TableLayoutPanel1.TabIndex = 4
         '
         'colID
@@ -348,14 +351,21 @@ Partial Class Form1
         Me.colEnglish.MinimumWidth = 6
         Me.colEnglish.Name = "colEnglish"
         Me.colEnglish.ReadOnly = True
-        Me.colEnglish.Width = 300
+        Me.colEnglish.Width = 250
         '
         'colTranslated
         '
         Me.colTranslated.HeaderText = "Translated"
         Me.colTranslated.MinimumWidth = 6
         Me.colTranslated.Name = "colTranslated"
-        Me.colTranslated.Width = 300
+        Me.colTranslated.Width = 250
+        '
+        'Column2
+        '
+        Me.Column2.HeaderText = "Notes (private)"
+        Me.Column2.MinimumWidth = 6
+        Me.Column2.Name = "Column2"
+        Me.Column2.Width = 250
         '
         'Column1
         '
@@ -366,15 +376,29 @@ Partial Class Form1
         Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
         Me.Column1.Width = 25
         '
+        'chkSearchNotes
+        '
+        Me.chkSearchNotes.AutoSize = True
+        Me.chkSearchNotes.Checked = True
+        Me.chkSearchNotes.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkSearchNotes.Location = New System.Drawing.Point(593, 44)
+        Me.chkSearchNotes.Margin = New System.Windows.Forms.Padding(13, 3, 3, 3)
+        Me.chkSearchNotes.Name = "chkSearchNotes"
+        Me.chkSearchNotes.Size = New System.Drawing.Size(67, 21)
+        Me.chkSearchNotes.TabIndex = 12
+        Me.chkSearchNotes.Text = "Notes"
+        Me.chkSearchNotes.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(910, 607)
+        Me.ClientSize = New System.Drawing.Size(966, 607)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.KeyPreview = True
         Me.MainMenuStrip = Me.MenuStrip1
+        Me.MinimumSize = New System.Drawing.Size(850, 300)
         Me.Name = "Form1"
         Me.Text = "SmarterTrack Translator"
         CType(Me.grid1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -422,5 +446,7 @@ Partial Class Form1
     Friend WithEvents colID As DataGridViewTextBoxColumn
     Friend WithEvents colEnglish As DataGridViewTextBoxColumn
     Friend WithEvents colTranslated As DataGridViewTextBoxColumn
+    Friend WithEvents Column2 As DataGridViewTextBoxColumn
     Friend WithEvents Column1 As DataGridViewButtonColumn
+    Friend WithEvents chkSearchNotes As CheckBox
 End Class

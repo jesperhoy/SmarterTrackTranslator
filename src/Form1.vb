@@ -6,6 +6,13 @@ Public Class Form1
   Dim CombinedFileName As String = Nothing
   Dim DataChanged As Boolean = False
 
+  Class TlItem
+    Public ID As String
+    Public English As String
+    Public Translated As String = ""
+    Public Notes As String = ""
+  End Class
+
   Private Sub grid1_CellValueNeeded(sender As Object, e As DataGridViewCellValueEventArgs) Handles grid1.CellValueNeeded
     Select Case e.ColumnIndex
       Case 0 'id
@@ -14,15 +21,22 @@ Public Class Form1
         e.Value = Data(e.RowIndex).English
       Case 2 'translated
         e.Value = Data(e.RowIndex).Translated
-      Case 3 ' button
+      Case 3 'notes
+        e.Value = Data(e.RowIndex).Notes
+      Case 4 ' button
         e.Value = "..."
     End Select
   End Sub
 
   Private Sub grid1_CellValuePushed(sender As Object, e As DataGridViewCellValueEventArgs) Handles grid1.CellValuePushed
     Dim NewValue = If(e.Value Is Nothing, "", CStr(e.Value).Trim)
-    If NewValue = Data(e.RowIndex).Translated Then Exit Sub
-    Data(e.RowIndex).Translated = NewValue
+    If e.ColumnIndex = 2 Then
+      If NewValue = Data(e.RowIndex).Translated Then Exit Sub
+      Data(e.RowIndex).Translated = NewValue
+    Else '3
+      If NewValue = Data(e.RowIndex).Notes Then Exit Sub
+      Data(e.RowIndex).Notes = NewValue
+    End If
     DataChanged = True
     UpdateTitleBar()
     UpdateStatusBar()
@@ -31,6 +45,7 @@ Public Class Form1
   Private Sub mnuOpenEnglish_Click(sender As Object, e As EventArgs) Handles mnuOpenEnglish.Click
     OpenFileDialog1.Title = "Open English"
     OpenFileDialog1.FileName = "en.xml"
+    OpenFileDialog1.Filter = "XML files|*.xml"
     If OpenFileDialog1.ShowDialog() <> DialogResult.OK Then Exit Sub
 
     Dim x = My.Computer.FileSystem.ReadAllText(OpenFileDialog1.FileName)
@@ -68,17 +83,13 @@ Public Class Form1
     mnuSaveCombinedAs.Enabled = ct > 0
   End Sub
 
-  Class TlItem
-    Public ID As String
-    Public English As String
-    Public Translated As String = ""
-  End Class
-
   Private Sub mnuSaveTranslationAs_Click(sender As Object, e As EventArgs) Handles mnuSaveTranslationAs.Click
     SaveFileDialog1.Title = "Save Translation"
     SaveFileDialog1.FileName = TranslationFileName
+    SaveFileDialog1.Filter = "Translation files|*.translation.xml"
     If SaveFileDialog1.ShowDialog <> DialogResult.OK Then Exit Sub
     TranslationFileName = SaveFileDialog1.FileName
+    If Not TranslationFileName.EndsWith(".translation.xml", StringComparison.InvariantCultureIgnoreCase) Then TranslationFileName &= ".translation.xml"
     mnuSaveTranslation_Click(sender, e)
   End Sub
 
@@ -99,9 +110,11 @@ Public Class Form1
     d.AppendChild(root)
     Dim el As Xml.XmlElement
     For Each itm In Data
-      If String.IsNullOrEmpty(itm.Translated) Then Continue For
+      If String.IsNullOrEmpty(itm.Translated) AndAlso
+       String.IsNullOrEmpty(itm.Notes) Then Continue For
       el = d.CreateElement("resource")
       el.SetAttribute("name", itm.ID)
+      If Not String.IsNullOrEmpty(itm.Notes) Then el.SetAttribute("notes", itm.Notes)
       el.InnerText = itm.Translated
       root.AppendChild(el)
     Next
@@ -110,10 +123,10 @@ Public Class Form1
     UpdateTitleBar()
   End Sub
 
-
   Private Sub mnuOpenTranslation_Click(sender As Object, e As EventArgs) Handles mnuOpenTranslation.Click
     OpenFileDialog1.Title = "Open Translation"
     OpenFileDialog1.FileName = ""
+    OpenFileDialog1.Filter = "Translation files|*.translation.xml"
     If OpenFileDialog1.ShowDialog() <> DialogResult.OK Then Exit Sub
     Dim x = My.Computer.FileSystem.ReadAllText(OpenFileDialog1.FileName)
     Dim d = New Xml.XmlDocument()
@@ -128,10 +141,13 @@ Public Class Form1
       dict.Add(itm.ID, NewItm)
     Next
     Dim ct = 0
+    Dim na As Xml.XmlAttribute
     For Each n As Xml.XmlNode In d.GetElementsByTagName("root")(0).ChildNodes
       If n.NodeType <> Xml.XmlNodeType.Element Then Continue For 'skip comments and white space
       If n.Name <> "resource" Then Continue For
       If Not dict.TryGetValue(n.Attributes("name").Value, itm) Then Continue For
+      na = n.Attributes("notes")
+      If na IsNot Nothing Then itm.Notes = na.Value
       itm.Translated = n.InnerText
       ct += 1
     Next
@@ -147,9 +163,16 @@ Public Class Form1
   End Sub
 
   Private Sub mnuSaveCombinedAs_Click(sender As Object, e As EventArgs) Handles mnuSaveCombinedAs.Click
+
     SaveFileDialog1.Title = "Save Combined"
+    SaveFileDialog1.Filter = "XML files|*.xml"
     SaveFileDialog1.FileName = CombinedFileName
+mark1:
     If SaveFileDialog1.ShowDialog <> DialogResult.OK Then Exit Sub
+    If SaveFileDialog1.FileName.EndsWith(".translation.xml", StringComparison.InvariantCultureIgnoreCase) Then
+      MessageBox.Show("Cannot save combined with a .translation.xml extension", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+      GoTo mark1
+    End If
     CombinedFileName = SaveFileDialog1.FileName
     mnuSaveCombined_Click(sender, e)
   End Sub
@@ -200,11 +223,11 @@ mark1:
     If prev Then
       If CurRow = 0 AndAlso CurCol = 0 Then MsgBox("Cannot find """ & fv & """") : Exit Sub
       CurCol -= 1
-      If CurCol < 0 Then CurCol = 2 : CurRow -= 1
+      If CurCol < 0 Then CurCol = 3 : CurRow -= 1
     Else
-      If CurRow = Data.Count - 1 AndAlso CurCol >= 2 Then MsgBox("Cannot find """ & fv & """") : Exit Sub
+      If CurRow = Data.Count - 1 AndAlso CurCol >= 3 Then MsgBox("Cannot find """ & fv & """") : Exit Sub
       CurCol += 1
-      If CurCol > 2 Then CurCol = 0 : CurRow += 1
+      If CurCol > 3 Then CurCol = 0 : CurRow += 1
     End If
 
     Select Case CurCol
@@ -217,6 +240,9 @@ mark1:
       Case 2
         If Not chkSearchTranslated.Checked Then GoTo mark1
         v = Data(CurRow).Translated
+      Case 3
+        If Not chkSearchNotes.Checked Then GoTo mark1
+        v = Data(CurRow).Notes
     End Select
 
     If chkMatchExact.Checked Then
@@ -246,7 +272,7 @@ mark1:
     Dim itm = Data(e.RowIndex)
     If Not itm.English.Contains(vbLf) Then Exit Sub
     e.Cancel = True
-    grid1_CellClick(sender, New DataGridViewCellEventArgs(3, e.RowIndex))
+    grid1_CellClick(sender, New DataGridViewCellEventArgs(4, e.RowIndex))
   End Sub
 
   Private Sub txtFind_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtFind.KeyPress
@@ -254,16 +280,19 @@ mark1:
   End Sub
 
   Private Sub grid1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles grid1.CellClick
-    If e.RowIndex < 0 OrElse e.ColumnIndex <> 3 Then Exit Sub
+    If e.RowIndex < 0 OrElse e.ColumnIndex <> 4 Then Exit Sub
     Dim f = New frmEdit
     Dim itm = Data(e.RowIndex)
     f.txtID.Text = itm.ID
     f.txtEnglish.Text = itm.English
     f.txtTranslated.Text = itm.Translated
+    f.txtNotes.Text = itm.Notes
     If f.ShowDialog(Me) <> DialogResult.OK Then Exit Sub
-    Dim NewValue = f.txtTranslated.Text.Trim
-    If NewValue = itm.Translated Then Exit Sub
-    itm.Translated = NewValue
+    Dim New1 = f.txtTranslated.Text.Trim
+    Dim New2 = f.txtNotes.Text.Trim
+    If New1 = itm.Translated AndAlso New2 = itm.Notes Then Exit Sub
+    itm.Translated = New1
+    itm.Notes = New2
     grid1.InvalidateRow(e.RowIndex)
     DataChanged = True
     UpdateTitleBar()

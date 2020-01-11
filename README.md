@@ -2,7 +2,7 @@
 
 A Windows desktop tool for creating and updating translation files (for UI internationalization) for [SmarterTrack](https://www.smartertools.com/smartertrack).
 
-Lists English and translated items a side-by-side for easy reference, has a search function, and a helper dialog for multi-line items.
+Lists English and translated items a side-by-side for easy reference, records private notes for each item, has a search function, and a helper dialog for multi-line items.
 
 Using this tool, rather than editing the XML file directly, makes it easier to keep track of which items have been translated and which have not (the Translation column is empty for those that have not).
 
@@ -17,7 +17,10 @@ Also, whenever a new version of SmarterTrack is released, this tool makes it eas
 - Save your work (File menu / Save Translation).
 - And finally, generate a new language translation file for upload to your SmarterTrack web-site (File menu / Save Combined).
 
-The "Save Translation" function generates a file which only contains the entries that have been translated. Entries where the "Translated" column is blank are not saved. The "Save Combined" function generates a complete translation file which can be uploaded to your SmarterTrack web-site. For entries where the "Translated" column is blank, the English version is used instead.
+The "Save Translation" function generates a file which only contains the entries that have been translated or have private notes. Entries where both the "Translated" and the "Notes (private)" columns are blank, are not saved.
+
+ The "Save Combined" function generates a complete translation file which can be uploaded to your SmarterTrack web-site. For entries where the "Translated" column is blank, the English version is used instead.
+The "Notes (private)" column is not included in the combined file.
 
 You should always keep a separate "Save Translation" file version of your work.
 

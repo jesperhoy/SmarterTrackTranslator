@@ -269,4 +269,19 @@ mark1:
     UpdateTitleBar()
     UpdateStatusBar()
   End Sub
+
+  Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+    If e.CloseReason <> CloseReason.UserClosing OrElse
+      Not DataChanged Then Exit Sub
+    Dim r = MessageBox.Show("Do you want to save your changes?",
+                    Me.Text,
+                   MessageBoxButtons.YesNoCancel,
+                   MessageBoxIcon.Question,
+                   MessageBoxDefaultButton.Button1)
+    If r = DialogResult.No Then Exit Sub
+    If r = DialogResult.Cancel Then e.Cancel = True : Exit Sub
+    mnuSaveTranslation_Click(Nothing, Nothing)
+    If DataChanged Then e.Cancel = True
+  End Sub
+
 End Class

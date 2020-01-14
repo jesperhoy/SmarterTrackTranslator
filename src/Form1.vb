@@ -67,6 +67,11 @@ Public Class Form1
     grid1.Refresh()
     UpdateStatusBar()
     mnuOpenTranslation.Enabled = True
+    mnuFind.Enabled = True
+    mnuFindNext.Enabled = True
+    mnuFindPrev.Enabled = True
+    mnuNextEmpty.Enabled = True
+    mnuPrevEmpty.Enabled = True
   End Sub
 
   Private Sub UpdateStatusBar()
@@ -163,7 +168,6 @@ Public Class Form1
   End Sub
 
   Private Sub mnuSaveCombinedAs_Click(sender As Object, e As EventArgs) Handles mnuSaveCombinedAs.Click
-
     SaveFileDialog1.Title = "Save Combined"
     SaveFileDialog1.Filter = "XML files|*.xml"
     SaveFileDialog1.FileName = CombinedFileName
@@ -201,16 +205,9 @@ mark1:
     AboutBox1.ShowDialog()
   End Sub
 
-  Private Sub btnFindNext_Click(sender As Object, e As EventArgs) Handles btnFindNext.Click
-    DoFind(False)
-  End Sub
-  Private Sub btnFindPrev_Click(sender As Object, e As EventArgs) Handles btnFindPrev.Click
-    DoFind(True)
-  End Sub
-
-  Private Sub DoFind(prev As Boolean)
+  Public Sub DoFind(prev As Boolean)
     If Data Is Nothing OrElse Data.Count = 0 Then Exit Sub
-    Dim fv = txtFind.Text.Trim
+    Dim fv = frmFind.txtFind.Text.Trim
     If fv = "" Then Exit Sub
 
     Dim c = grid1.CurrentCell
@@ -221,38 +218,46 @@ mark1:
 
 mark1:
     If prev Then
-      If CurRow = 0 AndAlso CurCol = 0 Then MsgBox("Cannot find """ & fv & """") : Exit Sub
-      CurCol -= 1
-      If CurCol < 0 Then CurCol = 3 : CurRow -= 1
+      If CurRow = 0 AndAlso CurCol = 0 Then
+        If Not frmFind.chkWrapAround.Checked Then MsgBox("Cannot find """ & fv & """") : Exit Sub
+        CurRow = Data.Count - 1 : CurCol = 3
+      Else
+        CurCol -= 1
+        If CurCol < 0 Then CurCol = 3 : CurRow -= 1
+      End If
     Else
-      If CurRow = Data.Count - 1 AndAlso CurCol >= 3 Then MsgBox("Cannot find """ & fv & """") : Exit Sub
-      CurCol += 1
-      If CurCol > 3 Then CurCol = 0 : CurRow += 1
+      If CurRow = Data.Count - 1 AndAlso CurCol >= 3 Then
+        If Not frmFind.chkWrapAround.Checked Then MsgBox("Cannot find """ & fv & """") : Exit Sub
+        CurRow = 0 : CurCol = 0
+      Else
+        CurCol += 1
+        If CurCol > 3 Then CurCol = 0 : CurRow += 1
+      End If
     End If
 
     Select Case CurCol
       Case 0
-        If Not chkSearchID.Checked Then GoTo mark1
+        If Not frmFind.chkSearchID.Checked Then GoTo mark1
         v = Data(CurRow).ID
       Case 1
-        If Not chkSearchEnglish.Checked Then GoTo mark1
+        If Not frmFind.chkSearchEnglish.Checked Then GoTo mark1
         v = Data(CurRow).English
       Case 2
-        If Not chkSearchTranslated.Checked Then GoTo mark1
+        If Not frmFind.chkSearchTranslated.Checked Then GoTo mark1
         v = Data(CurRow).Translated
       Case 3
-        If Not chkSearchNotes.Checked Then GoTo mark1
+        If Not frmFind.chkSearchNotes.Checked Then GoTo mark1
         v = Data(CurRow).Notes
     End Select
 
-    If chkMatchExact.Checked Then
-      If chkMatchCase.Checked Then
+    If frmFind.chkMatchExact.Checked Then
+      If frmFind.chkMatchCase.Checked Then
         If v <> fv Then GoTo mark1
       Else
         If Not String.Equals(v, fv, StringComparison.CurrentCultureIgnoreCase) Then GoTo mark1
       End If
     Else
-      If chkMatchCase.Checked Then
+      If frmFind.chkMatchCase.Checked Then
         If v.IndexOf(fv) < 0 Then GoTo mark1
       Else
         If v.IndexOf(fv, StringComparison.CurrentCultureIgnoreCase) < 0 Then GoTo mark1
@@ -262,21 +267,11 @@ mark1:
     grid1.CurrentCell = grid1.Rows(CurRow).Cells(CurCol)
   End Sub
 
-  Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
-    If e.KeyCode <> Keys.F3 Then Exit Sub
-    If e.Modifiers = Keys.None Then DoFind(False) : Exit Sub
-    If e.Modifiers = Keys.Shift Then DoFind(True) : Exit Sub
-  End Sub
-
   Private Sub grid1_CellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles grid1.CellBeginEdit
     Dim itm = Data(e.RowIndex)
     If Not itm.English.Contains(vbLf) Then Exit Sub
     e.Cancel = True
     grid1_CellClick(sender, New DataGridViewCellEventArgs(4, e.RowIndex))
-  End Sub
-
-  Private Sub txtFind_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtFind.KeyPress
-    If e.KeyChar = vbCr Then e.Handled = True : DoFind(False)
   End Sub
 
   Private Sub grid1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles grid1.CellClick
@@ -311,6 +306,49 @@ mark1:
     If r = DialogResult.Cancel Then e.Cancel = True : Exit Sub
     mnuSaveTranslation_Click(Nothing, Nothing)
     If DataChanged Then e.Cancel = True
+  End Sub
+
+  Private Sub mnuFind_Click(sender As Object, e As EventArgs) Handles mnuFind.Click
+    frmFind.Owner = Me
+    frmFind.Show()
+  End Sub
+
+  Private Sub mnuFindNext_Click(sender As Object, e As EventArgs) Handles mnuFindNext.Click
+    If frmFind.txtFind.Text.Trim = "" Then frmFind.Show() : Exit Sub
+    DoFind(False)
+    End Sub
+
+  Private Sub mnuFindPrev_Click(sender As Object, e As EventArgs) Handles mnuFindPrev.Click
+    If frmFind.txtFind.Text.Trim = "" Then frmFind.Show() : Exit Sub
+    DoFind(True)
+  End Sub
+
+  Private Sub mnuNextEmpty_Click(sender As Object, e As EventArgs) Handles mnuNextEmpty.Click
+    GoEmpty(False)
+  End Sub
+
+  Private Sub mnuPrevEmpty_Click(sender As Object, e As EventArgs) Handles mnuPrevEmpty.Click
+    GoEmpty(True)
+  End Sub
+
+  Public Sub GoEmpty(prev As Boolean)
+    If Data Is Nothing OrElse Data.Count = 0 Then Exit Sub
+    Dim c = grid1.CurrentCell
+    If c Is Nothing Then MsgBox("Not currentcell") : Exit Sub
+    Dim CurRow = c.RowIndex
+    Dim ct = 0
+mark1:
+    If prev Then
+      If CurRow = 0 Then CurRow = Data.Count - 1 Else CurRow -= 1
+    Else
+      If CurRow = Data.Count - 1 Then CurRow = 0 Else CurRow += 1
+    End If
+    ct += 1
+    If Not String.IsNullOrEmpty(Data(CurRow).Translated) Then
+      If ct >= Data.Count Then MsgBox("There are no empty items") : Exit Sub
+      GoTo mark1
+    End If
+    grid1.CurrentCell = grid1.Rows(CurRow).Cells(2)
   End Sub
 
 End Class

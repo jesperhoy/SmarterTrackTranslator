@@ -13,19 +13,25 @@ Public Class Form1
     Public Notes As String = ""
   End Class
 
-  Private Sub grid1_CellValueNeeded(sender As Object, e As DataGridViewCellValueEventArgs) Handles grid1.CellValueNeeded
-    Select Case e.ColumnIndex
+  Private Function CellValue(row As Integer, col As Integer) As String
+    Dim Itm = Data(row)
+    Select Case col
       Case 0 'id
-        e.Value = Data(e.RowIndex).ID
+        Return Itm.ID
       Case 1 'english
-        e.Value = Data(e.RowIndex).English
+        Return Itm.English
       Case 2 'translated
-        e.Value = Data(e.RowIndex).Translated
+        Return Itm.Translated
       Case 3 'notes
-        e.Value = Data(e.RowIndex).Notes
-      Case 4 ' button
-        e.Value = "..."
+        Return Itm.Notes
+      Case Else
+        Throw New Exception("Invalid column index")
     End Select
+  End Function
+
+  Private Sub grid1_CellValueNeeded(sender As Object, e As DataGridViewCellValueEventArgs) Handles grid1.CellValueNeeded
+    If e.ColumnIndex = 4 Then e.Value = "..." : Exit Sub
+    e.Value = CellValue(e.RowIndex, e.ColumnIndex)
   End Sub
 
   Private Sub grid1_CellValuePushed(sender As Object, e As DataGridViewCellValueEventArgs) Handles grid1.CellValuePushed
@@ -63,6 +69,7 @@ Public Class Form1
     End If
     Data = NewData
     TranslationFileName = Nothing
+    UpdateTitleBar()
     grid1.RowCount = Data.Count
     grid1.Refresh()
     UpdateStatusBar()
@@ -309,8 +316,18 @@ mark1:
   End Sub
 
   Private Sub mnuFind_Click(sender As Object, e As EventArgs) Handles mnuFind.Click
+    If Data Is Nothing OrElse Data.Count = 0 Then Exit Sub
+
+    Dim c = grid1.CurrentCell
+    If c.ColumnIndex < 4 Then
+      Dim v = CellValue(c.RowIndex, c.ColumnIndex)
+      If Not String.IsNullOrEmpty(v) Then frmFind.txtFind.Text = v
+    End If
+
     frmFind.Owner = Me
     frmFind.Show()
+    frmFind.txtFind.SelectAll()
+    frmFind.txtFind.Focus()
   End Sub
 
   Private Sub mnuFindNext_Click(sender As Object, e As EventArgs) Handles mnuFindNext.Click

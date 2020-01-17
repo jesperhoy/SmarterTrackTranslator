@@ -152,7 +152,7 @@ Partial Class Form1
         Me.mnuSaveTranslation.Name = "mnuSaveTranslation"
         Me.mnuSaveTranslation.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
         Me.mnuSaveTranslation.Size = New System.Drawing.Size(314, 26)
-        Me.mnuSaveTranslation.Text = "Save translation..."
+        Me.mnuSaveTranslation.Text = "Save translation"
         '
         'mnuSaveTranslationAs
         '
@@ -168,7 +168,7 @@ Partial Class Form1
         Me.mnuSaveCombined.Enabled = False
         Me.mnuSaveCombined.Name = "mnuSaveCombined"
         Me.mnuSaveCombined.Size = New System.Drawing.Size(314, 26)
-        Me.mnuSaveCombined.Text = "Save combined..."
+        Me.mnuSaveCombined.Text = "Save combined"
         '
         'mnuSaveCombinedAs
         '
